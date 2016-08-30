@@ -13,3 +13,7 @@ class UserProfile(models.Model):
     city = models.CharField(max_length=10, null=True, blank=True)
     mobile = models.CharField(max_length=10, null=True, blank=True)
     address = models.TextField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = ("User Profile")
+
