@@ -8,7 +8,7 @@ class UserProfile(models.Model):
         ('female', 'Female'),
         ('other', 'Other'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE, unique=True)
     gender = models.CharField(default='male', choices=GENDER, max_length=10, null=True, blank=True)
     city = models.CharField(max_length=10, null=True, blank=True)
     mobile = models.CharField(max_length=10, null=True, blank=True)
@@ -16,4 +16,3 @@ class UserProfile(models.Model):
 
     class Meta:
         verbose_name = ("User Profile")
-

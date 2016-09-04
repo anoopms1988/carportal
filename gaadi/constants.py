@@ -18,3 +18,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 GRAPPELLI_INDEX_DASHBOARD = 'gaadi.dashboard.CustomIndexDashboard'
+
+

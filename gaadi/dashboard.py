@@ -35,12 +35,6 @@ class CustomIndexDashboard(Dashboard):
                     models=('django.contrib.*',),
                 ),
                 modules.AppList(
-                    _('Accounts Module'),
-                    column=1,
-                    css_classes=('collapse closed',),
-                    models=('apps.accounts.*',),
-                ),
-                modules.AppList(
                     _('Vehicle Module'),
                     column=1,
                     css_classes=('collapse closed',),
