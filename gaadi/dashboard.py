@@ -18,7 +18,6 @@ class CustomIndexDashboard(Dashboard):
     Custom index dashboard for www.
     """
 
-
     def init_with_context(self, context):
         site_name = get_admin_site_name(context)
 
@@ -27,7 +26,7 @@ class CustomIndexDashboard(Dashboard):
             _('Group: Administration & Applications'),
             column=1,
             collapsible=True,
-            children = [
+            children=[
                 modules.AppList(
                     _('Administration'),
                     column=1,
@@ -39,8 +38,18 @@ class CustomIndexDashboard(Dashboard):
                     column=1,
                     css_classes=('collapse closed',),
                     models=('apps.vehicle.*',),
-                )
+                ),
+                modules.AppList(
+                    _('Specification Module'),
+                    column=1,
+                    css_classes=('collapse closed',),
+                    models=('apps.specification.*',),
+                ),
+                modules.AppList(
+                    _('Feature Module'),
+                    column=1,
+                    css_classes=('collapse closed',),
+                    models=('apps.feature.*',),
+                ),
             ]
         ))
-
-

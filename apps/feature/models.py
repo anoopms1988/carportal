@@ -48,6 +48,7 @@ class InteriorFeatures(ExModel):
     reversing_camera = models.CharField(max_length=20, null=True, blank=True)
     steering_controls = models.CharField(max_length=20, null=True, blank=True)
     tachometer = models.CharField(max_length=20, null=True, blank=True)
+    variant = models.ForeignKey(Variant, related_name='interior_features')
 
     class Meta:
         verbose_name = _("Interior feature")
