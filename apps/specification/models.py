@@ -16,11 +16,19 @@ class Brakes(ExModel):
     front_brakes = models.CharField(max_length=20, null=False, blank=False)
     variant = models.ForeignKey(Variant, related_name='brakes')
 
+    class Meta:
+        verbose_name = _('Brake')
+        verbose_name_plural = _('Brake')
+
 
 class Capacity(ExModel):
     seating_capacity = models.CharField(max_length=20, null=False, blank=False)
     tank_capacity = models.CharField(max_length=20, null=False, blank=False)
     variant = models.ForeignKey(Variant, related_name='capacity')
+
+    class Meta:
+        verbose_name = _('Capacity')
+        verbose_name_plural = _('Capacity')
 
 
 class Dimension(ExModel):
@@ -34,7 +42,7 @@ class Dimension(ExModel):
 
     class Meta:
         verbose_name = _("Dimension")
-        verbose_name_plural = _("Dimensions")
+        verbose_name_plural = _("Dimension")
 
 
 class Engines(ExModel):
@@ -49,7 +57,7 @@ class Engines(ExModel):
 
     class Meta:
         verbose_name = _("Engine")
-        verbose_name_plural = _("Engines")
+        verbose_name_plural = _("Engine")
 
 
 class Steering(ExModel):
@@ -70,5 +78,3 @@ class Wheel(ExModel):
     class Meta:
         verbose_name = _("Wheel")
         verbose_name_plural = _("Wheel")
-
-
