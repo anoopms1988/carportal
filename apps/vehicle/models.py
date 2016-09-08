@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _, pgettext_lazy
 
 class VehicleFormType(ExModel):
     TYPES = (
+        ('all', 'All'),
         ('car', 'Car'),
         ('bikes', 'Bikes'),
         ('trucks', 'Trucks'),
@@ -17,14 +18,19 @@ class VehicleFormType(ExModel):
         verbose_name = _("Vehicle Form Type")
         verbose_name_plural = _("Vehicle Form Types")
 
+    def __str__(self):
+        return "%s" % (self.name)
+
 
 class Company(ExModel):
     TYPES = (
+        ('all', 'All'),
         ('car', 'Car'),
         ('bikes', 'Bikes'),
         ('trucks', 'Trucks'),
         ('other', 'Other'),
     )
+
     name = models.CharField(max_length=20, null=False, blank=False)
     vehicle_type = models.CharField(default='car', choices=TYPES, max_length=10, null=False, blank=False)
     logo = models.CharField(max_length=20, null=True, blank=True)
@@ -34,9 +40,13 @@ class Company(ExModel):
         verbose_name = _("Company")
         verbose_name_plural = _("Companies")
 
+    def __str__(self):
+        return "%s" % (self.name)
+
 
 class Dealer(ExModel):
     TYPES = (
+        ('all', 'All'),
         ('car', 'Car'),
         ('bikes', 'Bikes'),
         ('trucks', 'Trucks'),
@@ -63,6 +73,7 @@ class Vehicle(ExModel):
         ('discontinued', 'Discontinued'),
     )
     TYPES = (
+        ('all', 'All'),
         ('car', 'Car'),
         ('bikes', 'Bikes'),
         ('trucks', 'Trucks'),
