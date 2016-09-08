@@ -1,19 +1,13 @@
 from django.contrib import admin
-from .models import VehicleType, VehicleFormType, Dealer, Company \
-    , FuelType, RoadAssistance
+from .models import VehicleFormType, Dealer, Company \
+    , FuelType, RoadAssistance, Variant, Vehicle
 
 
 # Register your models here.
-
-class VehicleTypeAdmin(admin.ModelAdmin):
-    model = VehicleType
-
-
-admin.site.register(VehicleType, VehicleTypeAdmin)
-
-
 class VehicleFormTypeAdmin(admin.ModelAdmin):
     model = VehicleFormType
+    list_display = ['name', 'vehicle_type']
+    list_filter = ['status']
 
 
 admin.site.register(VehicleFormType, VehicleFormTypeAdmin)
@@ -45,3 +39,17 @@ class RoadAssistanceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(RoadAssistance, RoadAssistanceAdmin)
+
+
+class VehicleAdmin(admin.ModelAdmin):
+    model = Vehicle
+
+
+admin.site.register(Vehicle, VehicleAdmin)
+
+
+class VariantAdmin(admin.ModelAdmin):
+    model = Variant
+
+
+admin.site.register(Variant, VariantAdmin)

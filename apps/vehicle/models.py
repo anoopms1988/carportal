@@ -3,23 +3,15 @@ from gaadi.core.models import ExModel
 from django.utils.translation import ugettext_lazy as _, pgettext_lazy
 
 
-class VehicleType(ExModel):
+class VehicleFormType(ExModel):
     TYPES = (
         ('car', 'Car'),
         ('bikes', 'Bikes'),
         ('trucks', 'Trucks'),
         ('other', 'Other'),
     )
-    name = models.CharField(default='car', choices=TYPES, max_length=10, null=False, blank=False)
-
-    class Meta:
-        verbose_name = _("Vehicle Type")
-        verbose_name_plural = _("Vehicle Types")
-
-
-class VehicleFormType(ExModel):
     name = models.CharField(max_length=20, null=False, blank=False)
-    vehicle_type = models.ForeignKey(VehicleType, related_name='vehicle_type')
+    vehicle_type = models.CharField(default='car', choices=TYPES, max_length=10, null=False, blank=False)
 
     class Meta:
         verbose_name = _("Vehicle Form Type")
@@ -27,8 +19,14 @@ class VehicleFormType(ExModel):
 
 
 class Company(ExModel):
+    TYPES = (
+        ('car', 'Car'),
+        ('bikes', 'Bikes'),
+        ('trucks', 'Trucks'),
+        ('other', 'Other'),
+    )
     name = models.CharField(max_length=20, null=False, blank=False)
-    vehicle_type = models.ForeignKey(VehicleType, related_name='type')
+    vehicle_type = models.CharField(default='car', choices=TYPES, max_length=10, null=False, blank=False)
     logo = models.CharField(max_length=20, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
 
@@ -38,6 +36,12 @@ class Company(ExModel):
 
 
 class Dealer(ExModel):
+    TYPES = (
+        ('car', 'Car'),
+        ('bikes', 'Bikes'),
+        ('trucks', 'Trucks'),
+        ('other', 'Other'),
+    )
     name = models.CharField(max_length=20, null=False, blank=False)
     city = models.CharField(max_length=20, null=False, blank=False)
     address = models.TextField(null=False, blank=False)
@@ -45,7 +49,7 @@ class Dealer(ExModel):
     email = models.CharField(max_length=30, null=False, blank=False)
     working_hours = models.CharField(max_length=30, null=True, blank=True)
     company = models.ForeignKey(Company, related_name='company')
-    vehicle_type = models.ForeignKey(VehicleType, related_name='vehicletype')
+    vehicle_type = models.CharField(default='car', choices=TYPES, max_length=10, null=False, blank=False)
 
     class Meta:
         verbose_name = ("Dealer")
@@ -58,9 +62,15 @@ class Vehicle(ExModel):
         ('upcoming', 'Upcoming'),
         ('discontinued', 'Discontinued'),
     )
+    TYPES = (
+        ('car', 'Car'),
+        ('bikes', 'Bikes'),
+        ('trucks', 'Trucks'),
+        ('other', 'Other'),
+    )
     name = models.CharField(max_length=20, null=False, blank=False)
     vehicle_form = models.ForeignKey(VehicleFormType, related_name='vehicle_form')
-    vehicle_type = models.ForeignKey(VehicleType, related_name='type_of')
+    vehicle_type = models.CharField(default='car', choices=TYPES, max_length=10, null=False, blank=False)
     company = models.ForeignKey(Company, related_name='company_of')
     general_price = models.CharField(max_length=20, null=True, blank=True)
     general_image = models.CharField(max_length=20, null=True, blank=True)
