@@ -89,15 +89,28 @@ admin.site.register(FuelType, FuelTypeAdmin)
 class RoadAssistanceAdmin(admin.ModelAdmin):
     model = RoadAssistance
     list_display = ['contact_details','address','phone','email','company']
-    list_filter = ['status']
+    list_filter = ['status','company']
+    search_fields = ['contact_details']
+    actions = [activate, inactivate, archive]
+
+    activate.short_description = 'Activate selected items'
+    inactivate.short_description = 'Inactivate selected items'
+    archive.short_description = 'Archive selected items'
 
 admin.site.register(RoadAssistance, RoadAssistanceAdmin)
 
 
 class VehicleAdmin(admin.ModelAdmin):
     model = Vehicle
+    list_display = ['name','vehicle_form','vehicle_type','company','general_price','general_image','availability']
+    list_filter = ['status','company','vehicle_type','vehicle_form','availability']
+    search_fields = ['name']
+    actions = [activate, inactivate, archive]
 
-
+    activate.short_description = 'Activate selected items'
+    inactivate.short_description = 'Inactivate selected items'
+    archive.short_description = 'Archive selected items'
+    
 admin.site.register(Vehicle, VehicleAdmin)
 
 
