@@ -110,12 +110,19 @@ class VehicleAdmin(admin.ModelAdmin):
     activate.short_description = 'Activate selected items'
     inactivate.short_description = 'Inactivate selected items'
     archive.short_description = 'Archive selected items'
-    
+
 admin.site.register(Vehicle, VehicleAdmin)
 
 
 class VariantAdmin(admin.ModelAdmin):
     model = Variant
+    list_display = ['name','vehicle','fuel_type']
+    list_filter=['status']
+    search_fields = ['name']
+    actions = [activate, inactivate, archive]
 
+    activate.short_description = 'Activate selected items'
+    inactivate.short_description = 'Inactivate selected items'
+    archive.short_description = 'Archive selected items'
 
 admin.site.register(Variant, VariantAdmin)

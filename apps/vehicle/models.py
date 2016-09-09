@@ -65,6 +65,9 @@ class Dealer(ExModel):
         verbose_name = ("Dealer")
         verbose_name_plural = _("Dealers")
 
+    def __str__(self):
+        return "%s" % (self.name)
+
 
 class Vehicle(ExModel):
     AVAILABILITY = (
@@ -91,15 +94,33 @@ class Vehicle(ExModel):
         verbose_name = _("Vehicle")
         verbose_name_plural = _("Vehicles")
 
+    def __str__(self):
+        return "%s" % (self.name)
+
 
 class FuelType(models.Model):
     name = models.CharField(max_length=20, null=False, blank=False)
+
+    class Meta:
+        verbose_name = _("Fuel type")
+        verbose_name_plural = _("Fuel type")
+
+    def __str__(self):
+        return "%s" % (self.name)
 
 
 class Variant(ExModel):
     name = models.CharField(max_length=20, null=False, blank=False)
     vehicle = models.ForeignKey(Vehicle, related_name='vehicle')
     fuel_type = models.ForeignKey(FuelType, related_name='fuel_type')
+
+    class Meta:
+        verbose_name = _("Variant")
+        verbose_name_plural = _("Variant")
+
+    def __str__(self):
+        return "%s" % (self.name)
+
 
 
 class RoadAssistance(ExModel):
