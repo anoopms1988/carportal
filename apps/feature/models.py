@@ -65,9 +65,9 @@ class SafetyFeatures(ExModel):
     child_safety_lock =models.BooleanField(default=False)
     traction_control = models.BooleanField(default=False)
     hill_descent = models.BooleanField(default=False)
-    esp = models.CharField(max_length=20, null=True, blank=True)
+    esp = models.BooleanField(default=False)
     wheel_drive =models.BooleanField(default=False)
-    variant = models.BooleanField(default=False)
+    variant = models.ForeignKey(Variant, related_name='safety_features')
 
     class Meta:
         verbose_name = _("Safety feature")

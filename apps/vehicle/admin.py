@@ -1,36 +1,8 @@
 from django.contrib import admin
 from .models import VehicleFormType, Dealer, Company \
     , FuelType, RoadAssistance, Variant, Vehicle
-
-
+from gaadi.core.admin_functions import activate,inactivate,archive
 # Register your models here.
-
-def activate(modeladmin, request, queryset):
-    """
-    Admin command for approve all image
-    """
-    for loop_val in queryset:
-        loop_val.status = 'active'
-        loop_val.save()
-
-
-def inactivate(modeladmin, request, queryset):
-    """
-    Admin command for approve all image
-    """
-    for loop_val in queryset:
-        loop_val.status = 'inactive'
-        loop_val.save()
-
-
-def archive(modeladmin, request, queryset):
-    """
-    Admin command for approve all image
-    """
-    for loop_val in queryset:
-        loop_val.status = 'archived'
-        loop_val.save()
-
 
 class VehicleFormTypeAdmin(admin.ModelAdmin):
     model = VehicleFormType
