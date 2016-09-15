@@ -44,8 +44,7 @@ class RegisterView(views.APIView):
                                                      "Confirmation email is send to the registered email " + to_mail + ". Please check your email",
                                                      status.HTTP_200_OK)
         except Exception as e:
-            return HttpHandler.json_response_wrapper([{'status': False}], e.message, status.HTTP_200_OK)
-
+            return HttpHandler.json_response_wrapper([{'status': False}], str(e), status.HTTP_200_OK)
 
     @csrf_exempt
     def confirm_code(self, request):
@@ -69,7 +68,7 @@ class RegisterView(views.APIView):
             if email_confirmation:
                 selected_user.is_active = True
                 selected_user.save()
-                email_confirmation.email_verfied= True
+                email_confirmation.email_verfied = True
                 email_confirmation.save()
                 return HttpHandler.json_response_wrapper([{'status': True}],
                                                          "Confirmation successfully verified.Please login to the system",
@@ -78,5 +77,5 @@ class RegisterView(views.APIView):
                 return HttpHandler.json_response_wrapper([{'status': False}], "Failure", status.HTTP_200_OK,
                                                          True)
         except Exception as e:
-            return HttpHandler.json_response_wrapper([{'status': False}], e.message, status.HTTP_200_OK,
+            return HttpHandler.json_response_wrapper([{'status': False}], str(e), status.HTTP_200_OK,
                                                      True)
