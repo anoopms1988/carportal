@@ -176,3 +176,11 @@ class LoginView(views.APIView):
                     return HttpHandler.json_response_wrapper([], "Invalid password", status.HTTP_200_OK)
         except Exception as e:
             return HttpHandler.json_response_wrapper([], e.message, status.HTTP_200_OK)
+
+class LogoutView(views.APIView):
+    def post(self, request, format=None):
+        """
+        to logout from the system
+        """
+        logout(request)
+        return HttpHandler.json_response_wrapper([], "Successfully logged out from system", status.HTTP_200_OK)
