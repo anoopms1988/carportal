@@ -10,6 +10,7 @@ from .models import LoginAttempts, UserProfile, User, EmailConfirmation
 from django.utils.crypto import get_random_string
 from gaadi.http import HttpHandler
 from django.views.decorators.csrf import csrf_exempt
+from .functions import get_similar_names
 
 
 @permission_classes((AllowAny,))
@@ -79,3 +80,43 @@ class RegisterView(views.APIView):
         except Exception as e:
             return HttpHandler.json_response_wrapper([{'status': False}], str(e), status.HTTP_200_OK,
                                                      True)
+
+    @csrf_exempt
+    def username_availability(self, request, format=None):
+        """
+        api to check username availability and suggest usernames
+        """
+        data = request.POST
+        username = data.get('username', None)
+        try:
+            account = User.objects.filter(username=username).get()
+            similar_strings = [account.first_name, account.last_name]
+            suggested_usernames = [name for name in get_similar_names(username, similar_strings)]
+        except User.DoesNotExist:
+            account = None
+        if account:
+            return HttpHandler.json_response_wrapper([{
+                'available_usernames': suggested_usernames, 'status': False
+            }], "Same username already exist", status.HTTP_200_OK, True)
+        else:
+            return HttpHandler.json_response_wrapper([{'status': True
+                                                       }], "Username available", status.HTTP_200_OK, True)
+
+    @csrf_exempt
+    def email_availability(self, request):
+        """
+        api to check email availability
+        """
+        data = request.POST
+        email = data.get('email', None)
+        try:
+            account = User.objects.filter(email=email).get()
+        except User.DoesNotExist:
+            account = None
+        if account:
+            return HttpHandler.json_response_wrapper([{'status': False}], "Same email already exist",
+                                                     status.HTTP_200_OK, True)
+        else:
+            return HttpHandler.json_response_wrapper([{'status': True}], "Email available", status.HTTP_200_OK, True)
+
+

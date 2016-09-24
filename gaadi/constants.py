@@ -19,4 +19,4 @@ STATIC_URL = '/static/'
 
 GRAPPELLI_INDEX_DASHBOARD = 'gaadi.dashboard.CustomIndexDashboard'
 
-
+GRAPPELLI_ADMIN_TITLE = 'GAADI'
