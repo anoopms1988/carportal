@@ -10,7 +10,9 @@ from .models import LoginAttempts, UserProfile, User, EmailConfirmation
 from django.utils.crypto import get_random_string
 from gaadi.http import HttpHandler
 from django.views.decorators.csrf import csrf_exempt
-from .functions import get_similar_names
+from .functions import get_similar_names,get_client_ip
+from django.contrib.auth import authenticate, login, logout, hashers
+from .serializers import UserSerializer
 
 
 @permission_classes((AllowAny,))
@@ -119,4 +121,58 @@ class RegisterView(views.APIView):
         else:
             return HttpHandler.json_response_wrapper([{'status': True}], "Email available", status.HTTP_200_OK, True)
 
-
+@permission_classes((AllowAny,))
+class LoginView(views.APIView):
+    def post(self, request, format=None):
+        """
+        api function to make a login using username and password
+        """
+        try:
+            data = request.data
+            username = data.get('username', None)
+            password = data.get('password', None)
+            try:
+                existing_account = User.objects.filter(username=username).get()
+            except:
+                existing_account = None
+            if not existing_account:
+                return HttpHandler.json_response_wrapper([], "No user exist with given username", status.HTTP_200_OK)
+            if username and password:
+                user = authenticate(username=username, password=password)
+                if user:
+                    if user.is_active:
+                        login(request, user)
+                        account =User.objects.get(id=user.id)
+                        serialized = UserSerializer(account)
+                        return HttpHandler.json_response_wrapper([{'status': True, "data": serialized.data}], "Success",
+                                                                 status.HTTP_200_OK)
+                    else:
+                        return HttpHandler.json_response_wrapper([{'status': False, "data": []}], "User is not active",
+                                                                 status.HTTP_200_OK)
+                else:
+                    try:
+                        account = User.objects.filter(username=username).get()
+                    except User.DoesNotExist:
+                        account = None
+                    if account:
+                        ip_address = get_client_ip(request)
+                        user_agent = request.META['HTTP_USER_AGENT']
+                        login_attempts = LoginAttempts()
+                        login_attempts.username = username
+                        login_attempts.email = account.email
+                        login_attempts.ip_address = ip_address
+                        login_attempts.user_agent = user_agent
+                        login_attempts.save()
+                        failed_count = LoginAttempts.objects.filter(failed_time__lte=datetime.datetime.now(),
+                                                                    failed_time__gt=datetime.datetime.now() - datetime.timedelta(
+                                                                            minutes=5)).count()
+                        if failed_count > 3:
+                            to_mail = account.email
+                            username = account.username
+                            # try:
+                            #     EmailHandler.send('login-attempts', to_mail, {'first_name': username})
+                            # except Exception as e:
+                            #     pass
+                    return HttpHandler.json_response_wrapper([], "Invalid password", status.HTTP_200_OK)
+        except Exception as e:
+            return HttpHandler.json_response_wrapper([], e.message, status.HTTP_200_OK)

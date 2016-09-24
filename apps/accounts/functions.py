@@ -20,3 +20,15 @@ def get_similar_names(username, strings=[]):
             yielded += 1
             yield potential_username
         n += 1
+
+def get_client_ip(request):
+    """
+    function to get client ip
+    """
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[-1].strip()
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
